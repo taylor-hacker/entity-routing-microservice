@@ -2,7 +2,7 @@
 
 The Plan for this microservice is to use four HTTP requests which trigger functions that then update a SQLite DB. 
 
-This microservice evolved from a specific notes routing microservice into a more generic CRUD entity routing microservice that connects a SQLite DB to a to backend via Express and HTTP requests. 
+This microservice evolved from a specific notes routing microservice into a more generic CRUD Entity routing+deleting microservice that connects a betterSQLite 3 DB to a to backend using Typescript, express, Node, and HTTP requests. 
 
 POST   /items
     Returns 201 or error
@@ -44,44 +44,56 @@ CREATE TABLE Entities (
 
 ## Example:
 
-async function createItem() {
-  const response = await fetch("http://127.0.0.1:3003/items", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      app: "boon",
-      content: {
-        title: "Study for CS 361",
-        body: "Review UML sequence diagrams"
-      }
-    })
+
+```ts
+app.post("/items", createItem);
+```
+
+```ts
+export function createItem(request: Request, response: Response): void {
+  const id = randomUUID();
+  const now = new Date().toISOString();
+  const { app, content } = request.body;
+
+  database
+    .prepare("INSERT INTO Entities (id, app, content, created_at, updated_at) VALUES (?, ?, ?, ?, ?)")
+    .run(id, app, JSON.stringify(content), now, now);
+
+  response.status(201).json({
+    id,
+    app,
+    content,
+    createdAt: now,
+    updatedAt: now,
   });
-
-  const item = await response.json();
-
-  console.log("Status:", response.status);
-  console.log("Received item:", item);
 }
-
-createItem().catch(console.error);
+```
 
 #### response:
 
+```json
 {
-  "id": "550e8400-e29b-41d4-a716-446655440000",
+  "id": "sample uuid",
   "app": "boon",
   "content": {
-    "clue-profile": "Mom (or a uuid)",
-    "clue-body": "Mom likes the Ceylong black tea from David's Tea"
+    "title": "title",
+    "body": "content "
   },
-  "createdAt": "2026-08-01T22:30:00.000Z",
-  "updatedAt": "2026-08-01T22:30:00.000Z"
+  "createdAt": "2026-08-01 5:47pm",
+  "updatedAt": "2026-08-01 6:13pm"
 }
+```
 
-Similar examples would hold for getItem(), updateItem(), and DeleteItem(), 
+Similar examples would hold for getItem(), updateItem(), and DeleteItem(),
 
+## Demo:
+
+// demo.ts is a simple test program for the entity routing microservice.
+// Run the server first with: npm run dev
+// this instantiates the database and the server with the requisite routing functions
+// Then, in a second terminal instance, run this file with: npm run demo
+// this calls the functions and tests each function of the microservice with a sample database item
+// It creates a json item, reads it then updates it, then deletes it, then finally checks the DB status.
 
 
 

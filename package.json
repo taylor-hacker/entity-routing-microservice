@@ -1,0 +1,26 @@
+{
+  "name": "notes-routing-microservice",
+  "version": "1.0.0",
+  "description": "The Plan for this microservice is to use four HTTP requests which trigger functions that then update a SQLite DB.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx src/expressServer.ts",
+    "demo": "tsx src/demo.ts",
+    "check": "tsc --noEmit",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "better-sqlite3": "12.8.0",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^9.6.0",
+    "@types/express": "^5.0.6",
+    "@types/node": "20.19.43",
+    "tsx": "^4.23.1",
+    "typescript": "^7.0.2"
+  }
+}
