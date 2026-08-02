@@ -1,6 +1,6 @@
 # entity-routing-microservice
 
-The Plan for this microservice is to use four HTTP requests which trigger functions that then update a SQLite DB. 
+The Plan for this microservice is to use HTTP requests which trigger functions that then update a SQLite DB. 
 
 This microservice evolved from a specific notes routing microservice into a more generic CRUD Entity routing+deleting microservice that connects a betterSQLite 3 DB to a to backend using Typescript, express, Node, and HTTP requests. 
 
@@ -135,12 +135,13 @@ Similar examples would hold for getItem(), updateItem(), and DeleteItem(),
 
 ## Demo:
 
-// demo.ts is a simple test program for the entity routing microservice.
-// Run the server first with: npm run dev
-// this instantiates the database and the server with the requisite routing functions
-// Then, in a second terminal instance, run this file with: npm run demo
-// this calls the functions and tests each function of the microservice with a sample database item
-// It creates a json item, reads it then updates it, then deletes it, then finally checks the DB status.
+
+demo.ts is a simple test program for the entity routing microservice.
+Run the server first with: npm run dev
+this instantiates the database and the server with the requisite routing functions
+Then, in a second terminal instance, run this file with: npm run demo
+this calls the functions and tests each function of the microservice with a sample database item
+It creates a json item, reads it then updates it, then deletes it, then finally checks the DB status.
 
 
 PLACEHOLDER FOR UML.
