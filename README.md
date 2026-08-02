@@ -13,6 +13,7 @@ PATCH  /items/:id
 DELETE /items/:id
     Returns 200 or error
 
+
 {
   "error": "Item not found"
 }
@@ -42,8 +43,50 @@ CREATE TABLE Entities (
   updated_at TEXT NOT NULL
 );
 
+## To use programatically (request or receive data): 
 ## Example:
 
+This implementation currently only supports local host. Implementing on a hosted platform e.g. cloudflare would change the scope. 
+
+fork repo, download package
+npm install
+npm run dev to start server
+(npm run demo to see feature set)
+
+in your code base you would paste something like this, which would generate a json object. 
+Naturally this could be done with variables as needed for your app:
+
+```ts
+const response = await fetch("http://127.0.0.1:3003/items", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    app: "your app-name",
+    content: {
+      title: "A note",
+      body: "Whatever your app needs to store",
+    },
+  }),
+});
+
+const savedEntity = await response.json();
+console.log(savedEntity);
+```
+
+To retrieve entities from the db via the microservice, you would do something like this:
+
+```ts
+const response = await fetch(
+  "http://127.0.0.1:3003/items?app=app-name",
+);
+
+const entities = await response.json();
+console.log(entities);
+```
+
+### code for createItem
 
 ```ts
 app.post("/items", createItem);
@@ -69,7 +112,7 @@ export function createItem(request: Request, response: Response): void {
 }
 ```
 
-#### response:
+#### sample response from createItem:
 
 ```json
 {
@@ -94,7 +137,6 @@ Similar examples would hold for getItem(), updateItem(), and DeleteItem(),
 // Then, in a second terminal instance, run this file with: npm run demo
 // this calls the functions and tests each function of the microservice with a sample database item
 // It creates a json item, reads it then updates it, then deletes it, then finally checks the DB status.
-
 
 
 PLACEHOLDER FOR UML.
