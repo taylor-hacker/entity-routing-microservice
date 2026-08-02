@@ -13,13 +13,15 @@ PATCH  /items/:id
 DELETE /items/:id
     Returns 200 or error
 
-
+```
 {
   "error": "Item not found"
 }
+```
 
 The way the routing will work is via express sending HTTP requests across a shared generic json structure. The structure is as follows: 
 
+```
 {
   "id": uuid",
   "app": one of the five potential apps" 
@@ -30,11 +32,12 @@ The way the routing will work is via express sending HTTP requests across a shar
   "createdAt": "xxxxxxxx",
   "updatedAt": "yyyyyyyyy"
 }
+```
 
 The program generates app and content, the microservice generates id, createdAt, and UpdatedAt. 
 
 Generic SQLite Schema 
-
+```
 CREATE TABLE Entities (
   id TEXT PRIMARY KEY,
   app TEXT NOT NULl, 
@@ -42,6 +45,7 @@ CREATE TABLE Entities (
   created_at TEXT NOT NULL,
   updated_at TEXT NOT NULL
 );
+```
 
 ## To use programatically (request or receive data): 
 ## Example:
