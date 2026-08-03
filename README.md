@@ -144,4 +144,6 @@ this calls the functions and tests each function of the microservice with a samp
 It creates a json item, reads it then updates it, then deletes it, then finally checks the DB status.
 
 
-PLACEHOLDER FOR UML.
+## UML:
+<img width="1528" height="1592" alt="UML" src="https://github.com/user-attachments/assets/1cf4c092-40be-4fef-9843-d09b2bca5ca5" />
+
