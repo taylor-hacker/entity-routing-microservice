@@ -8,7 +8,9 @@ export function createItem(request: Request, response: Response): void {
   const { app, content } = request.body;
 
   database
-    .prepare("INSERT INTO Entities (id, app, content, created_at, updated_at) VALUES (?, ?, ?, ?, ?)")
+    .prepare(
+      "INSERT INTO Entities (id, app, content, created_at, updated_at) VALUES (?, ?, ?, ?, ?)",
+    )
     .run(id, app, JSON.stringify(content), now, now);
 
   response.status(201).json({
