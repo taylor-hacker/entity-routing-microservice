@@ -1,15 +1,8 @@
-// This file is a simple test program for the routing microservice.
-// Run the server first with: npm run dev
-// this instantiates the database and the server with the requisite routing functions
-// Then run this file with: npm run demo
-// this calls the functions and tests each function of the microservice with a sample database item
-// It creates a json item, reads it then updates it, then deletes it, then finally checks the DB status.
+const itemsUrl = "http://127.0.0.1:3003/items";
+const demoItemsUrl = `${itemsUrl}?app=boon-demo`;
 
-async function demo() {
-
-  //create an item 
-  console.log("CREATE ITEM TEST");
-  const createResponse = await fetch("http://127.0.0.1:3003/items", {
+async function createDemoItem() {
+  const response = await fetch(itemsUrl, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -23,32 +16,22 @@ async function demo() {
     }),
   });
 
-  const createdItem = await createResponse.json();
-  console.log("CREATE status:", createResponse.status);
-  console.log(createdItem);
+  const item = await response.json();
+  console.log("CREATE status:", response.status);
+  console.log(item);
+  return item;
+}
 
-  //db test after creating item
-  console.log("");
+async function readDemoItems(label: string) {
+  const response = await fetch(demoItemsUrl);
+  const items = await response.json();
+  console.log(label, response.status);
+  console.log(items);
+  return items;
+}
 
-  console.log("DB STATUS AFTER CREATE");
-  const createDbResponse = await fetch("http://127.0.0.1:3003/items?app=boon-demo");
-  const createDbItems = await createDbResponse.json();
-
-  console.log("DB status:", createDbResponse.status);
-  console.log("DB items after create:", createDbItems.length);
-  console.log("");
-
-  //read items test
-  console.log("READ ITEMS TEST");
-  const readResponse = await fetch("http://127.0.0.1:3003/items?app=boon-demo");
-  const readItems = await readResponse.json();
-  console.log("READ status:", readResponse.status);
-  console.log(readItems);
-
-
-  //update item test
-  console.log("UPDATE ITEM TEST");
-  const updateResponse = await fetch(`http://127.0.0.1:3003/items/${createdItem.id}`, {
+async function updateDemoItem(id: string) {
+  const response = await fetch(`${itemsUrl}/${id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -61,30 +44,28 @@ async function demo() {
     }),
   });
 
-  const updatedItem = await updateResponse.json();
-  console.log("UPDATE status:", updateResponse.status);
-  console.log(updatedItem);
-  console.log("");
+  const item = await response.json();
+  console.log("UPDATE status:", response.status);
+  console.log(item);
+}
 
+async function deleteDemoItem(id: string) {
+  const response = await fetch(`${itemsUrl}/${id}`, { method: "DELETE" });
+  const item = await response.json();
+  console.log("DELETE status:", response.status);
+  console.log(item);
+}
 
-  //delete item test
-  console.log("DELETE TEST");
-  const deleteResponse = await fetch(`http://127.0.0.1:3003/items/${createdItem.id}`, {
-    method: "DELETE",
-  });
-
-  const deletedItem = await deleteResponse.json();
-  console.log("DELETE status:", deleteResponse.status);
-  console.log(deletedItem);
-  console.log("");
-  console.log("FINAL DB STATUS TEST");
-
-  //final db status test after deleting item
-  const finalReadResponse = await fetch("http://127.0.0.1:3003/items?app=boon-demo");
-  const finalReadItems = await finalReadResponse.json();
-  console.log("STATUS:", finalReadResponse.status);
-  console.log("ITEMS IN DB: ", finalReadItems.length);
-  console.log("FINAL ITEMS IN DB:", finalReadItems);
+async function demo() {
+  const createdItem = await createDemoItem();
+  const itemsAfterCreate = await readDemoItems("DB status after create:");
+  console.log("DB items after create:", itemsAfterCreate.length);
+  await readDemoItems("READ status:");
+  await updateDemoItem(createdItem.id);
+  await deleteDemoItem(createdItem.id);
+  const finalItems = await readDemoItems("FINAL DB status:");
+  console.log("ITEMS IN DB:", finalItems.length);
+  console.log("FINAL ITEMS IN DB:", finalItems);
 }
 
 demo();
